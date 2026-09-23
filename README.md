@@ -6,8 +6,9 @@ This project is a small Capacitor 8 example used to reproduce banner safe-area b
 
 After updating to Capacitor 8.5.2, Android safe-area handling changed. The reported behavior is different depending on the Android version and the WebView version installed on the device:
 
-- Android 14 and below with WebView versions lower than 140 can apply the banner safe area twice, causing double padding.
-- Android 14 and below with WebView versions 140 or higher can fail to apply the safe area, causing the banner to appear behind the navigation bar.
+- Before the beta, Android 14 and below with WebView versions lower than 140 could apply the banner safe area twice, causing double padding.
+- The beta appears to fix the duplicated padding on older WebView versions.
+- With the beta, Android 14 and below with WebView versions 140 or higher can fail to apply the safe area, causing the banner to appear behind the navigation bar.
 - Android 15 and 16 currently handle the banner correctly in the tested configurations. Android 17 should be tested when available.
 
 The plugin beta added the `enableCapacitor8SafeAreaHandling` option, but both WebView branches must be tested independently. Testing only one WebView version on an Android emulator is not enough because Android System WebView is updated separately from the Android OS.
@@ -19,15 +20,17 @@ Related references:
 
 ## Observed Regressions
 
-### Android 12 + WebView 91
+Both screenshots below were captured with the beta version of the plugin on Android 12.
 
-This screenshot shows the original issue on Android 12 with WebView `91.0.4472.114`, where the banner receives duplicated safe-area padding:
+### Android 12 + WebView 91 (Beta Working)
 
-<img src="./screenshots/webview-91.png" alt="Banner with double safe-area padding" width="280">
+With WebView `91.0.4472.114`, the beta fixes the duplicated safe-area padding that occurred before the beta:
 
-### Android 12 + WebView 153
+<img src="./screenshots/webview-91.png" alt="Banner with safe-area handling working on WebView 91" width="280">
 
-This screenshot shows the regression reported after enabling the beta safe-area handling on Android 12 with WebView `153.0.8010.36`, where the banner is rendered behind the navigation bar:
+### Android 12 + WebView 153 (Beta Regression)
+
+With WebView `153.0.8010.36`, the beta can render the banner behind the navigation bar:
 
 <img src="./screenshots/webview-153.png" alt="Banner behind the navigation bar" width="280">
 
@@ -86,8 +89,8 @@ Do not validate the plugin with only one Android version or one WebView version.
 
 | Android version | WebView version | Required test |
 | --- | --- | --- |
-| Android 11, 12, or 13 | Below 140 | Test the legacy WebView path |
-| Android 11, 12, or 13 | 140 or higher | Test the current WebView path |
+| Android 11, 12, or 13 | Below 140 | Confirm the beta does not reintroduce duplicated padding |
+| Android 11, 12, or 13 | 140 or higher | Check that the banner stays above the navigation bar |
 | Android 15 or 16 | Below 140 and 140 or higher | Confirm both WebView paths remain compatible |
 
 This cross-version coverage is important because the Android OS version and Android System WebView version are independent variables. A result from Android 12 with WebView 91 does not represent Android 12 with WebView 153, and neither result replaces tests on Android 11, 13, 15, or 16.
