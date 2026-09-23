@@ -1,4 +1,5 @@
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Device } from '@capacitor/device';
 import { AdMobNextGen } from 'capacitor-admob-nextgen';
 
 const BANNER_AD_UNIT_ID = 'ca-app-pub-3940256099942544/9214589741';
@@ -65,7 +66,7 @@ window.customElements.define(
         padding: 10px 16px;
         border: 0;
         border-radius: 4px;
-        background-color: #73B5F6;
+        background-color: #2e7dcd;
         color: #fff;
         font: inherit;
         cursor: pointer;
@@ -198,20 +199,38 @@ window.customElements.define(
       :host {
         position: relative;
         display: block;
-        padding: 10px;
+        padding: 12px;
         text-align: center;
-        background-color: #73B5F6;
+        background-color: #2e7dcd;
       }
       ::slotted(h1) {
         margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-size: 0.9em;
+        font-size: 1.25em;
         font-weight: 600;
         color: #fff;
       }
     </style>
     <slot></slot>
     `;
+    }
+
+    async connectedCallback() {
+      const title = this.querySelector('h1');
+
+      if (!title) {
+        return;
+      }
+
+      try {
+        const deviceInfo = await Device.getInfo();
+        title.textContent =
+          deviceInfo.platform === 'android'
+            ? `Android ${deviceInfo.osVersion}`
+            : `AdMob Banner · ${deviceInfo.platform}`;
+      } catch (error) {
+        console.error('Could not read device information', error);
+      }
     }
   },
 );
