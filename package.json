@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "vite build && cap run android",
     "preview": "vite preview",
     "capacitor:sync:after": "node node_modules/capacitor-admob-nextgen/scripts/admob-manifest.js"
   },
