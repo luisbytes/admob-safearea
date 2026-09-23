@@ -1,0 +1,10 @@
+{
+  "appId": "luisbytes.admob",
+  "appName": "Admob-Safearea",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
