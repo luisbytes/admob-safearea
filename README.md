@@ -78,7 +78,7 @@ pnpm install
 Build, sync Capacitor, and launch Android:
 
 ```bash
-pnpm build
+pnpm start
 ```
 
 The Android command may ask you to select an emulator. The app includes a `Show banner` button so banner loading can be tested independently after AdMob initialization completes.
