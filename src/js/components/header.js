@@ -1,4 +1,5 @@
 import { Device } from '@capacitor/device';
+import capacitorPackage from '@capacitor/core/package.json';
 
 window.customElements.define(
   'app-header',
@@ -28,23 +29,27 @@ window.customElements.define(
         font-size: 0.9em;
       }
     </style>
-    <h1>AdMob Banner</h1>
-    <p id="device-info">Loading device information...</p>
+    <h1 id="android-info">Loading Android info...</h1>
+    <p id="webview-info">Loading device information...</p>
     `;
     }
 
     async connectedCallback() {
-      const deviceInfoElement = this.shadowRoot.querySelector('#device-info');
+      const androidInfoElement = this.shadowRoot.querySelector('#android-info');
+      const webviewInfoElement = this.shadowRoot.querySelector('#webview-info');
 
       try {
         const deviceInfo = await Device.getInfo();
-        const platformInfo =
-          deviceInfo.platform === 'android'
-            ? `Android ${deviceInfo.osVersion}`
-            : `AdMob Banner · ${deviceInfo.platform}`;
-        deviceInfoElement.textContent = `${platformInfo} · WebView ${deviceInfo.webViewVersion}`;
+
+        const androidInfo =`Android ${deviceInfo.osVersion}`;
+        const webviewInfo = `WebView ${deviceInfo.webViewVersion} · Capacitor ${capacitorPackage.version}`;
+
+        androidInfoElement.textContent = androidInfo;
+        webviewInfoElement.textContent = webviewInfo;
       } catch (error) {
-        deviceInfoElement.textContent = 'Device information unavailable';
+        androidInfoElement.textContent = 'Android information unavailable';
+        webviewInfoElement.textContent = 'Device information unavailable';
+        
         console.error('Could not read device information', error);
       }
     }
