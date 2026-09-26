@@ -10,6 +10,8 @@
   "scripts": {
     "start": "vite build && cap run android",
     "preview": "vite preview",
+    "adb:install": "./scripts/install_webview.sh",
+    "adb:uninstall": "./scripts/uninstall_webview.sh",
     "capacitor:sync:after": "node node_modules/capacitor-admob-nextgen/scripts/admob-manifest.js"
   },
   "dependencies": {
