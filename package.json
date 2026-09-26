@@ -8,8 +8,7 @@
     "mobile"
   ],
   "scripts": {
-    "start": "vite",
-    "build": "vite build && cap run android",
+    "start": "vite build && cap run android",
     "preview": "vite preview",
     "capacitor:sync:after": "node node_modules/capacitor-admob-nextgen/scripts/admob-manifest.js"
   },

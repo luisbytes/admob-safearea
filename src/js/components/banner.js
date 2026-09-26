@@ -1,77 +1,32 @@
-import { SplashScreen } from '@capacitor/splash-screen';
-import { Device } from '@capacitor/device';
 import { AdMobNextGen } from 'capacitor-admob-nextgen';
 
 const BANNER_AD_UNIT_ID = 'ca-app-pub-3940256099942544/9214589741';
 
 window.customElements.define(
-  'capacitor-welcome',
+  'app-banner',
   class extends HTMLElement {
     constructor() {
       super();
 
-      SplashScreen.hide();
-
       const root = this.attachShadow({ mode: 'open' });
-
       root.innerHTML = `
     <style>
       :host {
-        background-color: #1A1A1A;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         display: block;
-        width: 100%;
-        height: 100%;
-        box-sizing: border-box;
-        color: #fff;
       }
-      .app-shell {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 100%;
-      }
-      .safe-area {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 0;
-        overflow: hidden;
-        background-color: #b89920;
-        color: #fff;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-      }
-      .safe-area.top {
-        height: env(safe-area-inset-top);
-      }
-      .safe-area.bottom {
-        height: env(safe-area-inset-bottom);
-      }
-      .content {
-        flex: 1;
-        min-height: 0;
-        overflow: auto;
-      }
-      main {
-        padding: 15px;
-        height: 100%;
-      }
-      main h1 {
+      h1 {
         font-size: 1.25em;
       }
-      main button {
+      button {
         padding: 10px 16px;
         border: 0;
         border-radius: 4px;
-        background-color: #2e7dcd;
+        background-color: #8f2028;
         color: #fff;
         font: inherit;
         cursor: pointer;
       }
-      main button:disabled {
+      button:disabled {
         cursor: wait;
         opacity: 0.6;
       }
@@ -89,22 +44,11 @@ window.customElements.define(
         font-weight: 600;
       }
     </style>
-    <div class="app-shell">
-      <div class="safe-area top">Safe area</div>
-      <div class="content">
-        <capacitor-welcome-titlebar>
-          <h1>AdMob Banner</h1>
-        </capacitor-welcome-titlebar>
-        <main>
-          <h1>Test banner</h1>
-          <button id="show-banner" type="button" disabled>Show banner</button>
-          <button id="retry" type="button" hidden>Retry</button>
-          <p id="loading-state" aria-live="polite">Initializing AdMob SDK...</p>
-          <p id="banner-error" role="alert"></p>
-        </main>
-      </div>
-      <div class="safe-area bottom">Safe area</div>
-    </div>
+    <h1>Capacitor Community AdMob Banner</h1>
+    <button id="show-banner" type="button" disabled>Show banner</button>
+    <button id="retry" type="button" hidden>Retry</button>
+    <p id="loading-state" aria-live="polite">Initializing AdMob SDK...</p>
+    <p id="banner-error" role="alert"></p>
     `;
     }
 
@@ -184,53 +128,6 @@ window.customElements.define(
       }
 
       retryButton.disabled = false;
-    }
-  },
-);
-
-window.customElements.define(
-  'capacitor-welcome-titlebar',
-  class extends HTMLElement {
-    constructor() {
-      super();
-      const root = this.attachShadow({ mode: 'open' });
-      root.innerHTML = `
-    <style>
-      :host {
-        position: relative;
-        display: block;
-        padding: 12px;
-        text-align: center;
-        background-color: #2e7dcd;
-      }
-      ::slotted(h1) {
-        margin: 0;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-size: 1.25em;
-        font-weight: 600;
-        color: #fff;
-      }
-    </style>
-    <slot></slot>
-    `;
-    }
-
-    async connectedCallback() {
-      const title = this.querySelector('h1');
-
-      if (!title) {
-        return;
-      }
-
-      try {
-        const deviceInfo = await Device.getInfo();
-        title.textContent =
-          deviceInfo.platform === 'android'
-            ? `Android ${deviceInfo.osVersion}`
-            : `AdMob Banner · ${deviceInfo.platform}`;
-      } catch (error) {
-        console.error('Could not read device information', error);
-      }
     }
   },
 );
